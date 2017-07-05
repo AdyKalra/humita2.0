@@ -16,7 +16,7 @@ call :GenerateSpecFlowReport
 
 :Defaults
 rem ===========================================================================
-SET NUNIT_EXE=%~dp0packages\NUnit.ConsoleRunner.3.5.0\tools\nunit3-console.exe
+SET NUNIT_EXE=%~dp0packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe
 SET SPECFLOW_EXE=%~dp0packages\SpecFlow.2.1.0\Tools\specflow.exe
 SET TEST_RESULTS=%~dp0TestResults.xml
 SET TEST_OUTPUT=%~dp0TestOutput.txt
