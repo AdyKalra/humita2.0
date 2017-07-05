@@ -111,7 +111,7 @@ namespace Zukini.UI
             }
             if (!browserSession.Location.AbsoluteUri.StartsWith(url))
             {
-                throw new TimeoutException($"Exceeded timeout '{sessionConfiguration.Timeout.TotalMilliseconds} ms' trying to navigate to page '{url}'. Browser still on page '{browserSession.Location.AbsoluteUri}'.");
+                throw new TimeoutException("Exceeded timeout '{sessionConfiguration.Timeout.TotalMilliseconds} ms' trying to navigate to page '{url}'. Browser still on page '{browserSession.Location.AbsoluteUri}'.");
             }
         }
     }
