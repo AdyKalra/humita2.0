@@ -1,4 +1,4 @@
-﻿using BoDi;
+using BoDi;
 using Coypu;
 using Coypu.Drivers;
 using OpenQA.Selenium.Chrome;
