@@ -8,10 +8,6 @@ using System;
 using System.Configuration;
 using TechTalk.SpecFlow;
 using Zukini.UI.Examples.Features.CustomDrivers;
-using Zukini.UI;
-using NUnit.Framework;
-using NUnit.Framework.Internal.Commands;
-using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 
 namespace Zukini.UI.Examples.Features
