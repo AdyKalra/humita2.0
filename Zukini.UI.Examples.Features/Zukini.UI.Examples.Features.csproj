@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="CustomDrivers\CustomChromeSeleniumDriver.cs" />
     <Compile Include="CustomDrivers\CustomFirefoxSeleniumDriver.cs" />
+    <Compile Include="CustomDrivers\CustomPhantomJsSeleniumDriver.cs" />
     <Compile Include="CustomDrivers\CustomRemoteChromeSeleniumDriver.cs" />
     <Compile Include="Features\ClaimView\Login.feature.cs">
       <AutoGen>True</AutoGen>

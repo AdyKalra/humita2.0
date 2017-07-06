@@ -8,8 +8,7 @@ using System;
 using System.Configuration;
 using TechTalk.SpecFlow;
 using Zukini.UI.Examples.Features.CustomDrivers;
-using Zukini.UI;
-using NUnit.Framework;
+using OpenQA.Selenium.PhantomJS;
 
 namespace Zukini.UI.Examples.Features
 {
@@ -19,6 +18,8 @@ namespace Zukini.UI.Examples.Features
         private readonly SessionConfiguration _sessionConfiguration;
         private readonly ZukiniUIConfiguration _zukiniConfiguration;
         private readonly IObjectContainer _objectContainer;
+        private BrowserSession _browserSession;
+        private string lan;
 
         public Hooks(IObjectContainer container, 
             SessionConfiguration sessionConfig,
@@ -27,6 +28,7 @@ namespace Zukini.UI.Examples.Features
             _objectContainer = container;
             _sessionConfiguration = sessionConfig;
             _zukiniConfiguration = zukiniConfig;
+            lan = ConfigurationManager.AppSettings["Language"];
         }
 
         [BeforeScenario]
@@ -41,15 +43,27 @@ namespace Zukini.UI.Examples.Features
             _zukiniConfiguration.MaximizeBrowser = Convert.ToBoolean(GetConfigValue("MaximizeBrowser", "true"));
             _zukiniConfiguration.ScreenshotDirectory = GetConfigValue("ScreenshotDirectory", "Screenshots");
 
-            // Example of creating a custom chrome driver with specific options
-            // RegisterCustomChromeBrowser();
+            if (_browserSession == null && _sessionConfiguration.Browser == Browser.Chrome)
+            {
+                // Example of creating a custom chrome driver with specific options
+                RegisterCustomChromeBrowser();
+            }
 
-            // Example of creating a custom firefox driver with profile options
-            // RegisterCustomFirefoxBrowser();
+            if (_browserSession == null && _sessionConfiguration.Browser == Browser.Firefox)
+            {
+                // Example of creating a custom firefox driver with profile options
+                RegisterCustomFirefoxBrowser();
+            }
+
+            if (_browserSession == null && _sessionConfiguration.Browser == Browser.PhantomJS)
+            {
+                // Example of creating a custom chrome driver with specific options
+                RegisterCustomPhantomBrowser();
+            }
 
             // Example of creating a custom chrome remote driver with options
             // IMPORTANT: Must add hub url to App.config - Grid Settings
-            if (!String.IsNullOrWhiteSpace(GetConfigValue("GridUrl", "")))
+            if (!string.IsNullOrWhiteSpace(GetConfigValue("GridUrl", "")))
             {
                 RegisterCustomRemoteChromeBrowser();
             }
@@ -89,7 +103,7 @@ namespace Zukini.UI.Examples.Features
                 case "internetexplorer":
                     return Browser.InternetExplorer;
                 default:
-                    throw new ArgumentException(String.Format("Specified browserName '{0}' is not valid.", browserName));
+                    throw new ArgumentException(string.Format("Specified browserName '{0}' is not valid.", browserName));
             }
         }
 
@@ -101,13 +115,16 @@ namespace Zukini.UI.Examples.Features
             // create our chrome options and set a value
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("no-sandbox");
+            chromeOptions.AddArgument("--lang=" + lan);
 
-            // Pass options to a new chrome browser and pass into the BrowserSession
-            var customChromeDriver = new CustomChromeSeleniumDriver(chromeOptions);
-            var browserSession = new BrowserSession(customChromeDriver);
+          
+
+        // Pass options to a new chrome browser and pass into the BrowserSession
+        var customChromeDriver = new CustomChromeSeleniumDriver(chromeOptions);
+            _browserSession = new BrowserSession(customChromeDriver);
 
             // Finally, register with the DI container.
-            _objectContainer.RegisterInstanceAs<BrowserSession>(browserSession);
+            _objectContainer.RegisterInstanceAs<BrowserSession>(_browserSession);
         }
 
         /// <summary>
@@ -120,16 +137,28 @@ namespace Zukini.UI.Examples.Features
             // (typical scneario of specifying how to download files)
             var firefoxProfile = new FirefoxProfile();
             firefoxProfile.SetPreference("browser.download.folderList", 2);
-            firefoxProfile.SetPreference("browser.download.manager.showWhenStarting", false);
-            firefoxProfile.SetPreference("browser.download.dir", "C:\\Temp"); // Better to pass this in via a config value
+            //firefoxProfile.SetPreference("browser.download.manager.showWhenStarting", false);
+            //firefoxProfile.SetPreference("browser.download.dir", "C:\\Temp"); // Better to pass this in via a config value
             firefoxProfile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip");
+            firefoxProfile.SetPreference("intl.accept_languages", lan);
 
             // Pass options to a new chrome browser and pass into the BrowserSession
             var customFirefoxDriver = new CustomFirefoxSeleniumDriver(firefoxProfile);
-            var browserSession = new BrowserSession(customFirefoxDriver);
+            _browserSession = new BrowserSession(customFirefoxDriver);
 
             // Finally, register with the DI container.
-            _objectContainer.RegisterInstanceAs<BrowserSession>(browserSession);
+            _objectContainer.RegisterInstanceAs<BrowserSession>(_browserSession);
+        }
+
+        private void RegisterCustomPhantomBrowser()
+        {
+            var phantomLan = lan + "," + lan + ";q=0.5";
+            PhantomJSOptions options = new PhantomJSOptions();
+            options.AddAdditionalCapability("phantomjs.page.customHeaders.Accept-Language", phantomLan);
+            var customPhantomDriver = new CustomPhantomJsSeleniumDriver(options);
+            _browserSession = new BrowserSession(customPhantomDriver);
+            _objectContainer.RegisterInstanceAs<BrowserSession>(_browserSession);
+          
         }
 
         /// <summary>
@@ -140,6 +169,7 @@ namespace Zukini.UI.Examples.Features
             // Create chrome options and add any/all arguments
             var options = new ChromeOptions();
             options.AddArgument("no-sandbox");
+            options.AddArgument("--lan=es");
 
             // Must cast options to DesiredCapabilities due to issue with .net and driver
             // https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/7043

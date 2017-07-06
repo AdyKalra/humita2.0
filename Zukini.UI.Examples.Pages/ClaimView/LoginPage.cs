@@ -22,8 +22,8 @@ namespace Zukini.UI.Examples.Pages.ClaimView
         }
 
         private string SpinnerLocator = ".//div[@class='spinner-image']";
-        public ElementScope EmailTextBox { get { return browser.FindField("Email"); } }
-        public ElementScope PasswordTextBox { get { return browser.FindField("Password"); } }
+        public ElementScope EmailTextBox { get { return browser.FindXPath(".//input[@name='Email']"); } }
+        public ElementScope PasswordTextBox { get { return browser.FindXPath(".//input[@name='Password']"); } }
         public ElementScope LogginButton { get { return browser.FindXPath(".//input[@class='btn access-btn-submit access-margin-right-4']"); } }
         public ElementScope SummaryValidationError { get { return browser.FindXPath(".//div[@class='col-md-9 col-lg-8 summary-validation-error ng-binding']"); } }
         public ElementScope Spinner { get { return browser.FindXPath(SpinnerLocator); } }

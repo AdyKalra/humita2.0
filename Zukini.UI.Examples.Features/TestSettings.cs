@@ -15,5 +15,7 @@ namespace Zukini.UI.Examples.Features
         public static string JsonPlaceholderApiUrl {  get { return ConfigurationManager.AppSettings["JsonPlaceholderApiUrl"]; } }
         public static string GridUrl { get { return ConfigurationManager.AppSettings["GridUrl"]; } }
 
+        public static string BrowserLanguage { get { return ConfigurationManager.AppSettings["Language"]; } }
+
     }
 }

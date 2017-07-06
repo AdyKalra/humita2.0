@@ -8,15 +8,15 @@ using TechTalk.SpecFlow;
 namespace Zukini.UI
 {
     [Binding]
-    public class UIHooks : Hooks
+    public class UiHooks : Hooks
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UIHooks" /> class.
+        /// Initializes a new instance of the <see cref="UiHooks" /> class.
         /// </summary>
         /// <param name="objectContainer">The object container (Injected with DI).</param>
         /// <param name="scenarioContext">The current ScenarioContext (Injected with DI).</param>
         /// <param name="featureContext">The current FeatureContext (Injected with DI).</param>
-        public UIHooks(IObjectContainer objectContainer, ScenarioContext scenarioContext, FeatureContext featureContext) :
+        public UiHooks(IObjectContainer objectContainer, ScenarioContext scenarioContext, FeatureContext featureContext) :
             base(objectContainer, scenarioContext, featureContext)
         {
         }
@@ -26,7 +26,7 @@ namespace Zukini.UI
         /// prior to each test.
         /// </summary>
         [BeforeScenario]
-        protected void BeforeUIScenario()
+        protected void BeforeUiScenario()
         {
             BrowserSession browser;
             SessionConfiguration sessionConfig = ObjectContainer.Resolve<SessionConfiguration>();
@@ -56,7 +56,7 @@ namespace Zukini.UI
         /// and shuts down the driver.
         /// </summary>
         [AfterScenario]
-        protected void AfterUIScenario()
+        protected void AfterUiScenario()
         {
             var browser = ObjectContainer.Resolve<BrowserSession>();
             if (browser != null)
