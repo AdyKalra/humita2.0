@@ -12,12 +12,15 @@
 call :Defaults
 call :ParseArguments %*
 call :RunTests
-call :GenerateSpecFlowReport
+::call :GenerateSpecFlowReport
+call :GenerateNunitReport
+
 
 :Defaults
 rem ===========================================================================
 SET NUNIT_EXE=%~dp0packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe
 SET SPECFLOW_EXE=%~dp0packages\SpecFlow.2.1.0\Tools\specflow.exe
+SET REPORTUNIT_EXE=%~dp0packages\ReportUnit.1.2.1\tools\ReportUnit.exe
 SET TEST_RESULTS=%~dp0TestResults.xml
 SET TEST_OUTPUT=%~dp0TestOutput.txt
 SET TEST_FILE=%~dp0Zukini.nunit
@@ -51,10 +54,11 @@ IF DEFINED TAGS (
 if ERRORLEVEL 1 goto :Error
 goto :eof
 
-:GenerateSpecFlowReport
+::GenerateSpecFlowReport
+:GenerateNunitReport
 rem ===========================================================================
-@echo **************** Generating SpecFlow Report *************************
-%SPECFLOW_EXE% nunitexecutionreport %TEST_PROJ% /out:%TEST_RESULTS_HTML% /xmlTestResult:%TEST_RESULTS% /testOutput:%TEST_OUTPUT%
+@echo **************** Generating Nunit Report *************************
+%REPORTUNIT_EXE%  %TEST_RESULTS% 
 
 if ERRORLEVEL 1 goto :Error
 goto :eof
