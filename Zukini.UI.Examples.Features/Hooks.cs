@@ -45,22 +45,20 @@ namespace Zukini.UI.Examples.Features
             _zukiniConfiguration.MaximizeBrowser = Convert.ToBoolean(GetConfigValue("MaximizeBrowser", "true"));
             _zukiniConfiguration.ScreenshotDirectory = GetConfigValue("ScreenshotDirectory", "Screenshots");
 
-            if (_browserSession == null && _sessionConfiguration.Browser == Browser.Chrome)
+            if (_browserSession == null)
             {
-                // Example of creating a custom chrome driver with specific options
-                RegisterCustomChromeBrowser();
-            }
-
-            if (_browserSession == null && _sessionConfiguration.Browser == Browser.Firefox)
-            {
-                // Example of creating a custom firefox driver with profile options
-                RegisterCustomFirefoxBrowser();
-            }
-
-            if (_browserSession == null && _sessionConfiguration.Browser == Browser.PhantomJS)
-            {
-                // Example of creating a custom chrome driver with specific options
-                RegisterCustomPhantomBrowser();
+                if (_sessionConfiguration.Browser == Browser.Chrome)
+                {
+                    RegisterCustomChromeBrowser();
+                }
+                else if(_sessionConfiguration.Browser == Browser.Firefox)
+                {
+                    RegisterCustomFirefoxBrowser();
+                }
+                else if (_sessionConfiguration.Browser == Browser.PhantomJS)
+                {
+                    RegisterCustomPhantomBrowser();
+                }
             }
 
             // Example of creating a custom chrome remote driver with options
