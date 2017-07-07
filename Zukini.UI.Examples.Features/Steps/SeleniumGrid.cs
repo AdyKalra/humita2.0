@@ -1,23 +1,14 @@
 ﻿using BoDi;
 using Coypu;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zukini.UI.Examples.Pages;
 using Zukini.UI.Steps;
 
 namespace Zukini.UI.Examples.Features.Steps
 {
-    public class SeleniumGrid : UISteps
+    public class SeleniumGrid : UiSteps
     {
-        private SessionConfiguration _sessionConfiguration;
+        private readonly SessionConfiguration _sessionConfiguration;
 
         public SeleniumGrid(IObjectContainer objectContainer, SessionConfiguration sessionConfiguration)
             : base(objectContainer)

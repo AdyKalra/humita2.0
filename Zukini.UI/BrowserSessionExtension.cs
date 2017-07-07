@@ -37,7 +37,7 @@ namespace Zukini.UI
         /// <remarks>
         /// This version of the TryUntil method allows the caller to override the options used for the action
         /// This version of the TryUntil method is not typically used, refer to:
-        /// TryUntil(this BrowserSession browserSession, Action action, Func<bool> until)
+        /// TryUntil(this BrowserSession browserSession, Action action, Func<bool/> until)
         /// </remarks>
         /// <param name="browserSession">The browser session.</param>
         /// <param name="action">The action, typically a lambda expression like () => { ... }.</param>
@@ -56,7 +56,7 @@ namespace Zukini.UI
         /// <remarks>
         /// This version of the TryUntil method allows the caller to override the options used for the action and until
         /// This version of the TryUntil method is not typically used, refer to:
-        /// TryUntil(this BrowserSession browserSession, Action action, Func<bool> until)
+        /// TryUntil(this BrowserSession browserSession, Action action, Func<bool/> until)
         /// </remarks>
         /// <param name="browserSession">The browser session.</param>
         /// <param name="action">The action, typically a lambda expression like () => { ... }.</param>

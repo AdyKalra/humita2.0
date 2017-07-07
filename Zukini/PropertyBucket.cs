@@ -21,10 +21,10 @@ namespace Zukini
         /// </summary>
         /// <param name="key">Name of the item to save. Use this key to retrieve later.</param>
         /// <param name="item">The item to remember.</param>
-        /// <param name="allowOverwrite"<c>true</c> to overwrite the property if it already exists, otherwise <c>false</c>.</param>
+        /// <param name="allowOverwrite"/><c>true</c> to overwrite the property if it already exists, otherwise <c>false</c>.
         public void Remember<T>(string key, T item, bool allowOverwrite = false)
         {
-            SaveProperty<T>(key, item, allowOverwrite);
+            SaveProperty(key, item, allowOverwrite);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Zukini
         /// </summary>
         /// <param name="key">Name of the item to save. Use this key to retrieve later.</param>
         /// <param name="item">The item to remember.</param>
-        /// <param name="allowOverwrite"<c>true</c> to overwrite the property if it already exists, otherwise <c>false</c>.</param>
+        /// <param name="allowOverwrite"/><c>true</c> to overwrite the property if it already exists, otherwise <c>false</c>.
         public void Remember(string key, object item, bool allowOverwrite = false)
         {
             SaveProperty(key, item, allowOverwrite);
@@ -46,7 +46,7 @@ namespace Zukini
         public object GetProperty(string key)
         {
             object item;
-            if (!TryGetValue<object>(key, out item))
+            if (!TryGetValue(key, out item))
             {
                 throw new PropertyNotFoundException(key);
             }
@@ -61,7 +61,7 @@ namespace Zukini
         public T GetProperty<T>(string key) 
         {
             T item;
-            if (!TryGetValue<T>(key, out item))
+            if (!TryGetValue(key, out item))
             {
                 throw new PropertyNotFoundException(key);
             }
@@ -82,7 +82,7 @@ namespace Zukini
                 {
                     var date = DateTime.Now.ToString("yyyyMMdd_HHmmss");
                     var guid = Guid.NewGuid().ToString("N").Substring(0, 5);
-                    _testId = String.Format("{0}_{1}", date, guid);
+                    _testId = $"{date}_{guid}";
                 }
                 return _testId;
             }

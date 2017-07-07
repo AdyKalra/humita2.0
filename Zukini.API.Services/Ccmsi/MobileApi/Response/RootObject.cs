@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Zukini.API.Examples.Features.Ccmsi.MobileApi.Response
+namespace Zukini.API.Services.Ccmsi.MobileApi.Response
 {
     public class RootObject
     {
-        public List<object> errors { get; set; }
-        public Result result { get; set; }
+        public List<object> Errors { get; set; }
+        public Result Result { get; set; }
     }
 }

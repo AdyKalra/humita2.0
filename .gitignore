@@ -35,6 +35,13 @@ bld/
 *.VisualState.xml
 TestResult.xml
 
+# RUNTEST.BAT
+TestResults.*
+TestOutput.*
+Pickles/
+Screenshots/
+
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/

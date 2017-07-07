@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace Zukini.API.Services
@@ -13,12 +8,12 @@ namespace Zukini.API.Services
     public abstract class CcmsiService
     {
 
-        public T getDeserializeResponse<T>(IRestResponse response)
+        public T GetDeserializeResponse<T>(IRestResponse response)
         {
             var content = response.Content;
-            JObject jObject = JObject.Parse(content);
-            string json = JsonConvert.SerializeObject(jObject);
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            var jObject = JObject.Parse(content);
+            var json = JsonConvert.SerializeObject(jObject);
+            var serializer = new JavaScriptSerializer();
             return serializer.Deserialize<T>(json);
         }
     }

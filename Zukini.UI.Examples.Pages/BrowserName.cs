@@ -5,7 +5,7 @@ namespace Zukini.UI.Examples.Pages
     {
         Chrome = 0,
         FireFox = 1,
-        IE = 2,
+        Ie = 2,
         Safari = 3,
         Opera = 4
     }

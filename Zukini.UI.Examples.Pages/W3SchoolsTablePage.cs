@@ -9,8 +9,8 @@ namespace Zukini.UI.Examples.Pages
     {
         private const string PageTitle = "HTML table tag";
 
-        public ElementScope BrowserReferenceTable { get { return Browser.FindCss(".browserref"); } }
-        public ElementScope TopTextDiv { get { return Browser.FindCss(".toptext"); } }
+        public ElementScope BrowserReferenceTable => Browser.FindCss(".browserref");
+        public ElementScope TopTextDiv => Browser.FindCss(".toptext");
 
         public W3SchoolsTablePage(BrowserSession browserSession)
             : base(browserSession)
@@ -25,9 +25,9 @@ namespace Zukini.UI.Examples.Pages
         public bool IsBrowserSupported(string browserName)
         {
             BrowserName browser;
-            if (!Enum.TryParse<BrowserName>(browserName, out browser))
+            if (!Enum.TryParse(browserName, out browser))
             {
-                throw new Exception(String.Format("Invalid browser name {0} supplied.", browserName));
+                throw new Exception($"Invalid browser name {browserName} supplied.");
             }
             
             // Get second row

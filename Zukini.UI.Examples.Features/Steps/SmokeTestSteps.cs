@@ -11,9 +11,9 @@ namespace Zukini.UI.Examples.Features.Steps
 {
     [Binding]
     [Parallelizable(ParallelScope.Fixtures)]
-    public class SmokeTestSteps : UISteps
+    public class SmokeTestSteps : UiSteps
     {
-        private SessionConfiguration _sessionConfiguration;
+        private readonly SessionConfiguration _sessionConfiguration;
 
         public SmokeTestSteps(IObjectContainer objectContainer, SessionConfiguration sessionConfiguration)
             : base(objectContainer)
@@ -56,7 +56,7 @@ namespace Zukini.UI.Examples.Features.Steps
         {
             var page = new W3SchoolsTablePage(Browser);
             page.AssertCurrentPage();
-            Assert.IsTrue(page.IsBrowserSupported(browserName), String.Format("Expected browser {0} to be supported.", browserName));
+            Assert.IsTrue(page.IsBrowserSupported(browserName), $"Expected browser {browserName} to be supported.");
         }
 
         [Given(@"I remember the sub-header text")]
@@ -99,9 +99,9 @@ namespace Zukini.UI.Examples.Features.Steps
         public void ThenTheDelayedButtonShouldEventuallyExist()
         {
             var buttons = Browser.FindAllXPath("//button");
-            Assert.IsFalse(buttons.Count() > 0, "Button should not have existed yet");
+            Assert.IsFalse(buttons.Any(), "Button should not have existed yet");
 
-            Browser.WaitUntil(() => Browser.FindAllXPath("//button").Count() > 0, "Waiting for buttons to appear");
+            Browser.WaitUntil(() => Browser.FindAllXPath("//button").Any(), "Waiting for buttons to appear");
             buttons = Browser.FindAllXPath("//button");
             Assert.IsTrue(buttons.Count() == 1, "Button should exist by now");
         }
@@ -109,7 +109,7 @@ namespace Zukini.UI.Examples.Features.Steps
         [Then(@"the delayed button has a size and location")]
         public void ThenTheDelayedButtonHasASizeAndLocation()
         {
-            ElementScope button = Browser.FindXPath("//button");
+            var button = Browser.FindXPath("//button");
             Assert.IsTrue(button.Rectangle().Size.Height > 1, "Button had no height");
             Assert.IsTrue(button.Rectangle().Size.Width > 1, "Button had no width");
             Assert.IsTrue(button.Rectangle().Location.X > 1, "Button had no X location");
@@ -119,15 +119,15 @@ namespace Zukini.UI.Examples.Features.Steps
         [Given(@"I create a button that creates a delayed button")]
         public void GivenICreateAButtonThatCreatesADelayedButton()
         {
-            string jsButton = "createButtonToClick(); function createButtonToClick() { var button = document.createElement(\"button\"); button.id = \"button1\"; button.innerHTML = \"I am button\"; button.addEventListener(\"click\", setTimeout( createSecondButton, 2000 )); document.getElementsByTagName(\"body\")[0].appendChild(button); } function createSecondButton() { var button = document.createElement(\"button\"); button.id = \"button2\"; button.innerHTML = \"Hello World\"; document.getElementsByTagName(\"body\")[0].appendChild(button); }";
+            var jsButton = "createButtonToClick(); function createButtonToClick() { var button = document.createElement(\"button\"); button.id = \"button1\"; button.innerHTML = \"I am button\"; button.addEventListener(\"click\", setTimeout( createSecondButton, 2000 )); document.getElementsByTagName(\"body\")[0].appendChild(button); } function createSecondButton() { var button = document.createElement(\"button\"); button.id = \"button2\"; button.innerHTML = \"Hello World\"; document.getElementsByTagName(\"body\")[0].appendChild(button); }";
             Browser.ExecuteScript(jsButton);
         }
 
         [When(@"I use TryUntil on the button")]
         public void WhenIUseTryUntilOnTheButton()
         {
-            Action action = new Action(() => Browser.FindButton("button1").Click());
-            Browser.TryUntil(action, () => { return Browser.FindAllXPath("//button").Count() == 2; });
+            var action = new Action(() => Browser.FindButton("button1").Click());
+            Browser.TryUntil(action, () => Browser.FindAllXPath("//button").Count() == 2);
         }
 
         [Then(@"the second button should exist")]
@@ -152,7 +152,7 @@ namespace Zukini.UI.Examples.Features.Steps
         [Then(@"navigation (does|does not) timeout")]
         public void ThenNavigationWillTimeOut(string flag)
         {
-            bool navigationTimedOut = PropertyBucket.GetProperty<bool>("NavigationTimedOut");
+            var navigationTimedOut = PropertyBucket.GetProperty<bool>("NavigationTimedOut");
             if (flag == "does") {
                 Assert.That(navigationTimedOut, Is.True, "Navigation did not timeout");
             } else {

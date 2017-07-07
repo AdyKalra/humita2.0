@@ -9,6 +9,7 @@ using System.Configuration;
 using TechTalk.SpecFlow;
 using Zukini.UI.Examples.Features.CustomDrivers;
 using OpenQA.Selenium.PhantomJS;
+using static System.String;
 
 namespace Zukini.UI.Examples.Features
 {
@@ -16,19 +17,20 @@ namespace Zukini.UI.Examples.Features
     public class Hooks
     {
         private readonly SessionConfiguration _sessionConfiguration;
-        private readonly ZukiniUIConfiguration _zukiniConfiguration;
+        private readonly ZukiniUiConfiguration _zukiniConfiguration;
         private readonly IObjectContainer _objectContainer;
         private BrowserSession _browserSession;
-        private string lan;
+
+        public string Lan { get; }
 
         public Hooks(IObjectContainer container, 
             SessionConfiguration sessionConfig,
-            ZukiniUIConfiguration zukiniConfig)
+            ZukiniUiConfiguration zukiniConfig)
         {
             _objectContainer = container;
             _sessionConfiguration = sessionConfig;
             _zukiniConfiguration = zukiniConfig;
-            lan = ConfigurationManager.AppSettings["Language"];
+            Lan = ConfigurationManager.AppSettings["Language"];
         }
 
         [BeforeScenario]
@@ -63,7 +65,7 @@ namespace Zukini.UI.Examples.Features
 
             // Example of creating a custom chrome remote driver with options
             // IMPORTANT: Must add hub url to App.config - Grid Settings
-            if (!string.IsNullOrWhiteSpace(GetConfigValue("GridUrl", "")))
+            if (!IsNullOrWhiteSpace(GetConfigValue("GridUrl", "")))
             {
                 RegisterCustomRemoteChromeBrowser();
             }
@@ -75,10 +77,10 @@ namespace Zukini.UI.Examples.Features
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="defaultValue">The default value.</param>
-        private string GetConfigValue(string key, string defaultValue)
+        private static string GetConfigValue(string key, string defaultValue)
         {
             var configValue = ConfigurationManager.AppSettings[key];
-            return String.IsNullOrEmpty(configValue) ? defaultValue : configValue;
+            return IsNullOrEmpty(configValue) ? defaultValue : configValue;
         }
 
         /// <summary>
@@ -87,7 +89,7 @@ namespace Zukini.UI.Examples.Features
         /// <param name="browserName">Name of the browser.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentException"></exception>
-        private Browser GetBrowser(string browserName)
+        private static Browser GetBrowser(string browserName)
         {
             switch (browserName.ToLower())
             {
@@ -103,7 +105,7 @@ namespace Zukini.UI.Examples.Features
                 case "internetexplorer":
                     return Browser.InternetExplorer;
                 default:
-                    throw new ArgumentException(string.Format("Specified browserName '{0}' is not valid.", browserName));
+                    throw new ArgumentException($"Specified browserName '{browserName}' is not valid.");
             }
         }
 
@@ -115,7 +117,7 @@ namespace Zukini.UI.Examples.Features
             // create our chrome options and set a value
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("no-sandbox");
-            chromeOptions.AddArgument("--lang=" + lan);
+            chromeOptions.AddArgument("--lang=" + Lan);
 
           
 
@@ -124,7 +126,7 @@ namespace Zukini.UI.Examples.Features
             _browserSession = new BrowserSession(customChromeDriver);
 
             // Finally, register with the DI container.
-            _objectContainer.RegisterInstanceAs<BrowserSession>(_browserSession);
+            _objectContainer.RegisterInstanceAs(_browserSession);
         }
 
         /// <summary>
@@ -140,24 +142,24 @@ namespace Zukini.UI.Examples.Features
             //firefoxProfile.SetPreference("browser.download.manager.showWhenStarting", false);
             //firefoxProfile.SetPreference("browser.download.dir", "C:\\Temp"); // Better to pass this in via a config value
             firefoxProfile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/x-gzip");
-            firefoxProfile.SetPreference("intl.accept_languages", lan);
+            firefoxProfile.SetPreference("intl.accept_languages", Lan);
 
             // Pass options to a new chrome browser and pass into the BrowserSession
             var customFirefoxDriver = new CustomFirefoxSeleniumDriver(firefoxProfile);
             _browserSession = new BrowserSession(customFirefoxDriver);
 
             // Finally, register with the DI container.
-            _objectContainer.RegisterInstanceAs<BrowserSession>(_browserSession);
+            _objectContainer.RegisterInstanceAs(_browserSession);
         }
 
         private void RegisterCustomPhantomBrowser()
         {
-            var phantomLan = lan + "," + lan + ";q=0.5";
-            PhantomJSOptions options = new PhantomJSOptions();
+            var phantomLan = Lan + "," + Lan + ";q=0.5";
+            var options = new PhantomJSOptions();
             options.AddAdditionalCapability("phantomjs.page.customHeaders.Accept-Language", phantomLan);
             var customPhantomDriver = new CustomPhantomJsSeleniumDriver(options);
             _browserSession = new BrowserSession(customPhantomDriver);
-            _objectContainer.RegisterInstanceAs<BrowserSession>(_browserSession);
+            _objectContainer.RegisterInstanceAs(_browserSession);
           
         }
 
@@ -181,7 +183,7 @@ namespace Zukini.UI.Examples.Features
             var browserSession = new BrowserSession(customRemoteChromeDriver);
 
             // Finally, register with the DI container.
-            _objectContainer.RegisterInstanceAs<BrowserSession>(browserSession);
+            _objectContainer.RegisterInstanceAs(browserSession);
         }
     }
 }

@@ -80,7 +80,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Steps\CcmsiMobileApiExampleFeaturesSteps.cs" />
     <Compile Include="Steps\JsonPlaceholderApiSteps.cs" />
-    <Compile Include="TestSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

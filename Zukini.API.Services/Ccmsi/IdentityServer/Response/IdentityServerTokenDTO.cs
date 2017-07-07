@@ -1,6 +1,6 @@
-﻿namespace Zukini.API.Examples.Features.Ccmsi.IdentityServer.Request
+﻿namespace Zukini.API.Services.Ccmsi.IdentityServer.Response
 {
-    public class IdentityServerTokenDTO
+    public class IdentityServerTokenDto
     {
         public string access_token { get; set; }
         public int expires_in { get; set; }

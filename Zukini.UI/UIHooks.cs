@@ -1,6 +1,5 @@
 ﻿using BoDi;
 using Coypu;
-using Coypu.Drivers;
 using System;
 using System.IO;
 using TechTalk.SpecFlow;
@@ -29,7 +28,7 @@ namespace Zukini.UI
         protected void BeforeUiScenario()
         {
             BrowserSession browser;
-            SessionConfiguration sessionConfig = ObjectContainer.Resolve<SessionConfiguration>();
+            var sessionConfig = ObjectContainer.Resolve<SessionConfiguration>();
 
             // If the BrowserSession was provided, then use it.
             // Otherwise create a new session using a config (if provided)
@@ -41,7 +40,7 @@ namespace Zukini.UI
             else
             {
                 browser = sessionConfig != null ? new BrowserSession(sessionConfig) : new BrowserSession();
-                ObjectContainer.RegisterInstanceAs<BrowserSession>(browser);
+                ObjectContainer.RegisterInstanceAs(browser);
             }
 
             // Apply zukini specific settings
@@ -59,15 +58,13 @@ namespace Zukini.UI
         protected void AfterUiScenario()
         {
             var browser = ObjectContainer.Resolve<BrowserSession>();
-            if (browser != null)
+            if (browser == null) return;
+            if (ScenarioContext.TestError != null)
             {
-                if (this.ScenarioContext.TestError != null)
-                {
-                    TakeScreenshot(browser);
-                }
-
-                browser.Dispose();
+                TakeScreenshot(browser);
             }
+
+            browser.Dispose();
         }
 
         /// <summary>
@@ -92,10 +89,7 @@ namespace Zukini.UI
         /// Returns the ZukiniConfiguration if one was registered, otherwise returns 
         /// a new ZukiniConfiguration with default settings.
         /// </summary>
-        private ZukiniUIConfiguration ZukiniConfig
-        {
-            get { return ObjectContainer.Resolve<ZukiniUIConfiguration>() ?? new ZukiniUIConfiguration(); }
-        }
+        private ZukiniUiConfiguration ZukiniConfig => ObjectContainer.Resolve<ZukiniUiConfiguration>() ?? new ZukiniUiConfiguration();
 
         /// <summary>
         /// Helper method to take a screenshot of the browser and save out to the TestResults folder.
@@ -111,7 +105,7 @@ namespace Zukini.UI
                     Directory.CreateDirectory(artifactDirectory);
                 }
 
-                string screenshotFilePath = Path.Combine(artifactDirectory, GetScreenshotName());
+                var screenshotFilePath = Path.Combine(artifactDirectory, GetScreenshotName());
                 browser.SaveScreenshot(screenshotFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
 
                 // TODO: Add to the report transform to interpret this as a link (XSLT - yuck)
@@ -129,11 +123,11 @@ namespace Zukini.UI
         /// </summary>
         private string GetScreenshotName()
         {
-            var feature = this.FeatureContext.FeatureInfo.Title.Replace(" ", "");
-            var title = this.ScenarioContext.ScenarioInfo.Title.Replace(" ", "");
+            var feature = FeatureContext.FeatureInfo.Title.Replace(" ", "");
+            var title = ScenarioContext.ScenarioInfo.Title.Replace(" ", "");
             var propertyBucket = ObjectContainer.Resolve<PropertyBucket>();
 
-            return String.Format("{0}_{1}_{2}.png", feature, title, propertyBucket.TestId);
+            return $"{feature}_{title}_{propertyBucket.TestId}.png";
         }
 
 

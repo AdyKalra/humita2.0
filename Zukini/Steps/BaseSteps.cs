@@ -1,5 +1,4 @@
 ﻿using BoDi;
-using System;
 
 namespace Zukini.Steps
 {
@@ -23,24 +22,12 @@ namespace Zukini.Steps
         /// Returns the registered PropertyBucket used for remembering properties
         /// between steps.
         /// </summary>
-        protected PropertyBucket PropertyBucket
-        {
-            get
-            {
-                return _objectContainer.Resolve<PropertyBucket>();
-            }
-        }
+        protected PropertyBucket PropertyBucket => _objectContainer.Resolve<PropertyBucket>();
 
         /// <summary>
         /// Returns the ObjectContainer used for Dependency Injection
         /// </summary>
-        protected IObjectContainer ObjectContainer
-        {
-            get
-            {
-                return _objectContainer;
-            }
-        }
+        protected IObjectContainer ObjectContainer => _objectContainer;
 
 
         /// <summary>

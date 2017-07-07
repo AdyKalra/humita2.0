@@ -73,11 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CcmsiService.cs" />
-    <Compile Include="Ccmsi\ApiExamples.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ApiExamples.feature</DependentUpon>
-    </Compile>
     <Compile Include="Ccmsi\IdentityServer\Response\IdentityServerTokenDTO.cs" />
     <Compile Include="Ccmsi\IdentityServer\Request\SearchIdentityServer.cs" />
     <Compile Include="Ccmsi\MobileApi\Request\SearchCcmsiApi.cs" />
@@ -89,10 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Ccmsi\ApiExamples.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ApiExamples.feature.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

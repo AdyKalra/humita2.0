@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Zukini.API.Examples.Features.Ccmsi.MobileApi.Response
+namespace Zukini.API.Services.Ccmsi.MobileApi.Response
 {
     public class Result
     {
-        public List<EntityItemList> entityItemList { get; set; }
-        public int totalPages { get; set; }
-        public int totalRows { get; set; }
-        public int currentPage { get; set; }
-        public int nextPage { get; set; }
-        public object previousPage { get; set; }
+        public List<EntityItemList> EntityItemList { get; set; }
+        public int TotalPages { get; set; }
+        public int TotalRows { get; set; }
+        public int CurrentPage { get; set; }
+        public int NextPage { get; set; }
+        public object PreviousPage { get; set; }
     }
 }

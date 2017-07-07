@@ -4,13 +4,13 @@ using Zukini.Steps;
 
 namespace Zukini.UI.Steps
 {
-    public abstract class UISteps : BaseSteps
+    public abstract class UiSteps : BaseSteps
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UISteps"/> class.
+        /// Initializes a new instance of the <see cref="UiSteps"/> class.
         /// </summary>
         /// <param name="objectContainer">The object container.</param>
-        public UISteps(IObjectContainer objectContainer) :
+        protected UiSteps(IObjectContainer objectContainer) :
             base(objectContainer)
         {
         }
@@ -18,12 +18,6 @@ namespace Zukini.UI.Steps
         /// <summary>
         /// Returns the IWebDriver instance as registered with the ObjectContainer.
         /// </summary>
-        protected BrowserSession Browser 
-        { 
-            get
-            {
-                return ObjectContainer.Resolve<BrowserSession>();
-            }
-        }
+        protected BrowserSession Browser => ObjectContainer.Resolve<BrowserSession>();
     }
 }

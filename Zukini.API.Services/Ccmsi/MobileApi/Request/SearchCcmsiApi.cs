@@ -1,44 +1,33 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
-using Zukini.API.Examples.Features.Ccmsi.MobileApi.Response;
-using Zukini.API.Services;
+using Zukini.API.Services.Ccmsi.MobileApi.Response;
 
-namespace Zukini.API.Examples.Features.Ccmsi.MobileApi.Request
+namespace Zukini.API.Services.Ccmsi.MobileApi.Request
 {
     public class SearchCcmsiApi : CcmsiService
     {
-        public Uri BaseApiUrl
-        {
-            get { return new Uri(TestSettings.ApiMobileUrlDEV); }
-        }
+        public Uri BaseApiUrl => new Uri(TestSettings.ApiMobileUrlDev);
 
-        public RootObject getClientList(String userId, String accessToken)
+        public RootObject GetClientList(string userId, string accessToken)
         {
             var client = new RestClient(BaseApiUrl + "/Clients?userId=" + userId);
-            IRestResponse response = getResponseWithaddAuthorizationHeaders(client, accessToken);
-            return getDeserializeResponse<RootObject>(response);
+            var response = GetResponseWithaddAuthorizationHeaders(client, accessToken);
+            return GetDeserializeResponse<RootObject>(response);
         }
 
-        public RootObject getClaimList(String userId, String clientNumber, String accessToken)
+        public RootObject GetClaimList(string userId, string clientNumber, string accessToken)
         {
             var client = new RestClient(BaseApiUrl + "/Claims?clientNumber=" + clientNumber + "&userId=" + userId);
-            IRestResponse response = getResponseWithaddAuthorizationHeaders(client, accessToken);
-            return getDeserializeResponse<RootObject>(response);
+            var response = GetResponseWithaddAuthorizationHeaders(client, accessToken);
+            return GetDeserializeResponse<RootObject>(response);
         }
 
-        private IRestResponse getResponseWithaddAuthorizationHeaders(IRestClient client, String accessToken)
+        private static IRestResponse GetResponseWithaddAuthorizationHeaders(IRestClient client, string accessToken)
         {
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("authorization", "Bearer " + accessToken);
-            IRestResponse response = client.Execute(request);
+            var response = client.Execute(request);
             return response;
         }
 

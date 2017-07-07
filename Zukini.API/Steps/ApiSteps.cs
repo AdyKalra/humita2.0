@@ -13,7 +13,7 @@ namespace Zukini.API.Steps
         /// Initializes a new instance of the <see cref="ApiSteps"/> class.
         /// </summary>
         /// <param name="objectContainer">The object container.</param>
-        public ApiSteps(IObjectContainer objectContainer) :
+        protected ApiSteps(IObjectContainer objectContainer) :
             base(objectContainer)
         {
         }
@@ -38,7 +38,7 @@ namespace Zukini.API.Steps
         /// </summary>
         /// <param name="baseUrl">The base URL of the API endpoint.</param>
         /// <param name="resource">The resource in the API (e.g. /posts).</param>
-        /// <param name="obj">A JSON Serializable object to use as Post data.</param>
+        /// <param name="postData"></param>
         /// <returns>RestResponse object (from RestSharp)</returns>
         protected IRestResponse<Dictionary<string,string>> Post(Uri baseUrl, string resource, object postData)
         {
@@ -143,7 +143,7 @@ namespace Zukini.API.Steps
         /// </summary>
         /// <param name="baseUrl">The base URL of the API endpoint.</param>
         /// <param name="resource">The resource in the API (e.g. /posts).</param>
-        /// <param name="obj">A JSON Serializable object to use as Post data.</param>
+        /// <param name="postData"></param>
         /// <returns>Dictionary of key/value pairs containing the result data.</returns>
         protected Dictionary<string, string> SimplePost(Uri baseUrl, string resource, object postData)
         {

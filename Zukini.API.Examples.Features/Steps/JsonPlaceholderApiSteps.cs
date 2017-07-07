@@ -1,10 +1,11 @@
-﻿using BoDi;
-using NUnit.Framework;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using BoDi;
+using NUnit.Framework;
+using RestSharp;
 using TechTalk.SpecFlow;
+using Zukini.API.Services;
 using Zukini.API.Steps;
 
 namespace Zukini.API.Examples.Features.Steps
@@ -17,18 +18,15 @@ namespace Zukini.API.Examples.Features.Steps
         {
         }
 
-        public Uri BaseApiUrl
-        {
-            get { return new Uri(TestSettings.JsonPlaceholderApiUrl); }
-        }
+        public Uri BaseApiUrl => new Uri(TestSettings.JsonPlaceholderApiUrl);
 
         #region Post/Patch/Put steps
 
         [Given(@"I post the following data to the API")]
-        public void GivenIPostTheFollowingDataToTheAPI(Table table)
+        public void GivenIPostTheFollowingDataToTheApi(Table table)
         {
             var result = SimplePost(BaseApiUrl, "/posts", table.Rows[0]);
-            PropertyBucket.Remember<Dictionary<string, string>>("PostData", result);
+            PropertyBucket.Remember("PostData", result);
         }
 
         [Given(@"I ""(Patch|Put)"" a record with id ""(\d+)""")]
@@ -39,14 +37,14 @@ namespace Zukini.API.Examples.Features.Steps
             switch (method)
             {
                 case "Patch":
-                    result = SimplePatch(BaseApiUrl, String.Format("posts/{0}", id), table.Rows[0]);
+                    result = SimplePatch(BaseApiUrl, $"posts/{id}", table.Rows[0]);
                     break;
                 case "Put":
-                    result = SimplePut(BaseApiUrl, String.Format("posts/{0}", id), table.Rows[0]);
+                    result = SimplePut(BaseApiUrl, $"posts/{id}", table.Rows[0]);
                     break;
             }
 
-            PropertyBucket.Remember<Dictionary<string, string>>(String.Format("{0}Data", method), result);
+            PropertyBucket.Remember($"{method}Data", result);
         }
 
         [Then(@"the post data should return ""(.*)"" in the ""(.*)"" field")]
@@ -60,7 +58,7 @@ namespace Zukini.API.Examples.Features.Steps
         [Then(@"the ""(Patch|Put)"" data should return ""(.*)"" in the ""(.*)"" field")]
         public void ThenThePutOrPostDataShouldReturnInTheField(string method, string expectedValue, string fieldName)
         {
-            var resultData = PropertyBucket.GetProperty<Dictionary<string, string>>(String.Format("{0}Data", method));
+            var resultData = PropertyBucket.GetProperty<Dictionary<string, string>>($"{method}Data");
             Assert.AreEqual(expectedValue, resultData[fieldName]);
         }
 
@@ -69,9 +67,9 @@ namespace Zukini.API.Examples.Features.Steps
         #region Get Steps
 
         [Given(@"I perform a GET for post ""(.*)""")]
-        public void GivenIPerformAGETForPost(int postId)
+        public void GivenIPerformAgetForPost(int postId)
         {
-            var response = SimpleGet(BaseApiUrl, String.Format("/posts/{0}", postId));
+            var response = SimpleGet(BaseApiUrl, $"/posts/{postId}");
             PropertyBucket.Remember("PostData", response);
         }
 
@@ -92,9 +90,9 @@ namespace Zukini.API.Examples.Features.Steps
         #region Delete Steps
 
         [Given(@"I perform a DELETE for postId ""(.*)""")]
-        public void GivenIPerformADELETEForPostId(int postId)
+        public void GivenIPerformAdeleteForPostId(int postId)
         {
-            var response = Delete(BaseApiUrl, String.Format("posts/{0}", postId));
+            var response = Delete(BaseApiUrl, $"posts/{postId}");
             PropertyBucket.Remember<IRestResponse>("DeleteResponse", response);
         }
 
@@ -104,13 +102,13 @@ namespace Zukini.API.Examples.Features.Steps
             var deleteResponse = PropertyBucket.GetProperty<IRestResponse>("DeleteResponse");
             HttpStatusCode code;
 
-            if (Enum.TryParse<HttpStatusCode>(statusCode, true, out code))
+            if (Enum.TryParse(statusCode, true, out code))
             {
                 Assert.AreEqual(code, deleteResponse.StatusCode);
             }
             else
             {
-                throw new Exception(String.Format("Invalid HttpStatusCode specified: {0}", statusCode));
+                throw new Exception($"Invalid HttpStatusCode specified: {statusCode}");
             }
         }
 

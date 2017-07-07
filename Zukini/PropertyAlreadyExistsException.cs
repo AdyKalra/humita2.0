@@ -4,9 +4,13 @@ namespace Zukini
 {
     public class PropertyAlreadyExistsException : Exception
     {
+        public string Key { get; }
+
         public PropertyAlreadyExistsException(string key)
-            : base(String.Format("A property with the name {0} was already rememberd."))
+            : base($@"A property with the name {"name"} was already rememberd.")
         {
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            Key = key;
         }
     }
 }

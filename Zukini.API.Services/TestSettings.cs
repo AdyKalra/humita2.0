@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Zukini.API.Examples.Features
+namespace Zukini.API.Services
 {
     /// <summary>
     /// Helper class to make getting at the test settings easy. 
@@ -8,11 +8,12 @@ namespace Zukini.API.Examples.Features
     /// </summary>
     public static class TestSettings
     {
-        public static string ApiMobileUrlDEV { get { return ConfigurationManager.AppSettings["CCMSIMobileApiUrlDev"]; } }
-        public static string ApiMobileUrlUAT { get { return ConfigurationManager.AppSettings["CCMSIMobileApiUrlTest"]; } }
+        public static string ApiMobileUrlDev => ConfigurationManager.AppSettings["CCMSIMobileApiUrlDev"];
+        public static string ApiMobileUrlUat => ConfigurationManager.AppSettings["CCMSIMobileApiUrlTest"];
 
-        public static string IdentityServerApiUrlUAT { get { return ConfigurationManager.AppSettings["IdentityServerApiUrlTest"]; } }
-        public static string IdentityServerApiUrlDEV { get { return ConfigurationManager.AppSettings["IdentityServerApiUrlDev"]; } }
+        public static string IdentityServerApiUrlUat => ConfigurationManager.AppSettings["IdentityServerApiUrlTest"];
+        public static string IdentityServerApiUrlDev => ConfigurationManager.AppSettings["IdentityServerApiUrlDev"];
 
+        public static string JsonPlaceholderApiUrl => ConfigurationManager.AppSettings["JsonPlaceholderApiUrl"];
     }
 }

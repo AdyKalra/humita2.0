@@ -1,12 +1,11 @@
-﻿using System;
-using TechTalk.SpecFlow;
-using BoDi;
+﻿using BoDi;
 using FluentAssertions;
 using NUnit.Framework;
+using TechTalk.SpecFlow;
+using Zukini.API.Services.Ccmsi.IdentityServer.Request;
+using Zukini.API.Services.Ccmsi.MobileApi.Request;
+using Zukini.API.Services.Ccmsi.MobileApi.Response;
 using Zukini.API.Steps;
-using Zukini.API.Examples.Features.Ccmsi.IdentityServer.Request;
-using Zukini.API.Examples.Features.Ccmsi.MobileApi.Request;
-using Zukini.API.Examples.Features.Ccmsi.MobileApi.Response;
 
 namespace Zukini.API.Examples.Features.Steps
 {
@@ -18,37 +17,37 @@ namespace Zukini.API.Examples.Features.Steps
             : base(objectContainer)
         {
         }
-        private string accessToken;
-        RootObject jsonObject;
+        private string _accessToken;
+        RootObject _jsonObject;
 
         [Given(@"an access token")]
         public void GivenAnAccessToken()
         {
-            SearchIdentityServer searchIS = new SearchIdentityServer();
-            accessToken = searchIS.getIdentityServerTokenDTO().access_token;
+            var searchIs = new SearchIdentityServer();
+            _accessToken = searchIs.GetIdentityServerTokenDto().access_token;
         }
 
         [When(@"I search for userId ""(.*)""")]
         public void WhenISearchForUserId(string userId)
         {
-            SearchCcmsiApi search = new SearchCcmsiApi();
-            jsonObject = search.getClientList(userId, accessToken);
+            var search = new SearchCcmsiApi();
+            _jsonObject = search.GetClientList(userId, _accessToken);
         }
 
         [When(@"I search for userId '(.*)' and clientNumber '(.*)'")]
         public void WhenISearchForUserIdAndClientNumber(string userId, string clientNumber)
         {
-            SearchCcmsiApi search = new SearchCcmsiApi();
-            jsonObject = search.getClaimList(userId, clientNumber, accessToken);
+            var search = new SearchCcmsiApi();
+            _jsonObject = search.GetClaimList(userId, clientNumber, _accessToken);
         }
 
      
         [Then(@"the result contains (.*) and (.*)")]
         public void ThenTheResultContains(int clientValue, string clientName)
         {
-            int i = clientValue - 1;
-            int clientValueResponse = Int32.Parse(jsonObject.result.entityItemList[i].clientValue);
-            string clientNameResponse = jsonObject.result.entityItemList[i].clientName;
+            var i = clientValue - 1;
+            var clientValueResponse = int.Parse(_jsonObject.Result.EntityItemList[i].ClientValue);
+            var clientNameResponse = _jsonObject.Result.EntityItemList[i].ClientName;
             clientValue.Should().Be(clientValueResponse);
             clientNameResponse.ShouldBeEquivalentTo(clientName);
         }
@@ -56,8 +55,8 @@ namespace Zukini.API.Examples.Features.Steps
         [Then(@"the result must contains (.*) and (.*)")]
         public void ThenTheResultMustContains(string claimNumber, string adjusterEmail)
         {
-            string claimNumberResponse = jsonObject.result.entityItemList[0].claimNumber;
-            string adjusterEmailResponse = jsonObject.result.entityItemList[0].adjusterEmail;
+            var claimNumberResponse = _jsonObject.Result.EntityItemList[0].ClaimNumber;
+            var adjusterEmailResponse = _jsonObject.Result.EntityItemList[0].AdjusterEmail;
 
             claimNumber.ShouldBeEquivalentTo(claimNumberResponse);
             adjusterEmail.ShouldBeEquivalentTo(adjusterEmailResponse);                
